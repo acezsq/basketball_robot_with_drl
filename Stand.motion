@@ -1,0 +1,4 @@
+#WEBOTS_MOTION,V1.0,AnkleL,AnkleR,ArmLowerL,ArmLowerR,ArmUpperL,ArmUpperR,FootL,FootR,Head,LegLowerL,LegLowerR,LegUpperL,LegUpperR,Neck,PelvL,PelvR,PelvYL,PelvYR,ShoulderL,ShoulderR
+00:00:000,Unnamed 0,-1.22557,1.23066,*,*,*,*,*,*,*,-2.25,2.25,1.15026,-1.14978,*,*,*,*,*,*,*
+00:00:100,Init,-0.48955,0.48962,*,*,*,*,*,*,*,-1.452,1.44642,1.32248,-1.31712,*,*,*,*,*,*,*
+00:00:200,Stamd0,-0.43839,0.43942,*,*,*,*,*,*,*,-0.75172,0.7518,0.25428,-0.25378,*,*,*,*,*,*,*
