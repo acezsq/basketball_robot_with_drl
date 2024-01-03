@@ -82,8 +82,10 @@ def get_args():
     parser.add_argument("--lmbda", type=float, default=0.95)
     parser.add_argument("--epochs", type=int, default=10)
     parser.add_argument("--eps", type=float, default=0.2)
-    parser.add_argument("--batch_size",type=int, default=2048)
-    parser.add_argument("--mini_batch_size",type=int, default=64)
+    # parser.add_argument("--batch_size",type=int, default=2048)
+    parser.add_argument("--batch_size",type=int, default=512)
+    # parser.add_argument("--mini_batch_size",type=int, default=64)
+    parser.add_argument("--mini_batch_size",type=int, default=16)
 
     args = parser.parse_args()
     return args
@@ -681,8 +683,8 @@ def train(opt, env):
         image = torch.tensor(image).cuda()
         state = torch.cat(tuple(image for _ in range(4)))[None, :, :, :]
         while not terminal:
-            print(state.shape)
-            print(state)
+            # print(state.shape)
+            # print(state)
             prediction = actor(state)
             action_dist = torch.distributions.Categorical(prediction)
             action_sample = action_dist.sample()
@@ -696,6 +698,7 @@ def train(opt, env):
             episode_return += reward
 
             if len(replay_memory) > opt.batch_size:
+                print("---------开始进行参数更新----------")
                 state_batch, action_batch, reward_batch, next_state_batch, terminal_batch = zip(*replay_memory)
                 states = torch.cat(state_batch, dim=0).cuda()
                 actions = torch.tensor(action_batch).view(-1, 1).cuda()
@@ -730,13 +733,14 @@ def train(opt, env):
         if (iter+1) % 10 == 0:
             evaluate_num += 1
             evaluate_rewards.append(episode_return)
+            print("当前投中:{}次".format(res))
             print("evaluate_num:{} \t episode_return:{} \t".format(evaluate_num, episode_return))
             writer.add_scalar('step_rewards', evaluate_rewards[-1], global_step= iter)
         if (iter+1) % 1000 == 0:
             actor_dict = {"net": actor.state_dict(), "optimizer": actor_optimizer.state_dict()}
             critic_dict = {"net": critic.state_dict(), "optimizer": critic_optimizer.state_dict()}
-            torch.save(actor_dict, "{}/flappy_bird_actor_good".format(opt.saved_path))
-            torch.save(critic_dict, "{}/flappy_bird_critic_good".format(opt.saved_path))
+            # torch.save(actor_dict, "{}/robot_actor_good".format(opt.saved_path))
+            # torch.save(critic_dict, "{}/robot_critic_good".format(opt.saved_path))
 
     writer.close()
 
