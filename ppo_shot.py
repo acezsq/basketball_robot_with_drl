@@ -660,7 +660,8 @@ def train(opt, env):
 
     actor_optimizer = torch.optim.Adam(actor.parameters(), lr=opt.lr)
     critic_optimizer = torch.optim.Adam(critic.parameters(), lr=opt.lr)
-    writer = SummaryWriter(opt.log_path)
+    # writer = SummaryWriter(opt.log_path)
+    writer = SummaryWriter('runs_basket/exp1')
     replay_memory = []
     evaluate_num = 0
     evaluate_rewards = []
@@ -735,10 +736,11 @@ def train(opt, env):
             evaluate_rewards.append(episode_return)
             print("当前投中:{}次".format(res))
             print("evaluate_num:{} \t episode_return:{} \t".format(evaluate_num, episode_return))
-            writer.add_scalar('step_rewards', evaluate_rewards[-1], global_step= iter)
-        if (iter+1) % 1000 == 0:
-            actor_dict = {"net": actor.state_dict(), "optimizer": actor_optimizer.state_dict()}
-            critic_dict = {"net": critic.state_dict(), "optimizer": critic_optimizer.state_dict()}
+            writer.add_scalar('step_rewards', evaluate_rewards[-1], iter)
+            writer.add_scalar('shot_success_nums', res, iter)
+        # if (iter+1) % 1000 == 0:
+        #     actor_dict = {"net": actor.state_dict(), "optimizer": actor_optimizer.state_dict()}
+        #     critic_dict = {"net": critic.state_dict(), "optimizer": critic_optimizer.state_dict()}
             # torch.save(actor_dict, "{}/robot_actor_good".format(opt.saved_path))
             # torch.save(critic_dict, "{}/robot_critic_good".format(opt.saved_path))
 
